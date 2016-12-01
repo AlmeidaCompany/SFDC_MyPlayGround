@@ -1,0 +1,8 @@
+<apex:page controller="theController" extensions="ext1,ext2,ext3" >
+    <apex:form >
+    	<apex:commandButton value="Go" action="{!go}" reRender="out" />
+        <apex:outputPanel id="out" >{!output}</apex:outputPanel>
+        <apex:outputPanel id="out1" >{!TestMap}</apex:outputPanel>
+        
+    </apex:form>
+</apex:page>

@@ -1,0 +1,12 @@
+<apex:page standardController="Contact" >
+    <div>
+        <p>
+           Assistant Name: {!Contact.AssistantName}
+        </p> 
+    </div>
+    <div>
+        <p>
+        	Assistant Phone: <a href="tel:{!Contact.AssistantPhone}"> {!Contact.AssistantPhone} </a>   
+        </p>        
+    </div>
+</apex:page>

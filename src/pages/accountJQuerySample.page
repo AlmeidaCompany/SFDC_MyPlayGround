@@ -1,0 +1,41 @@
+<apex:page standardController="Account" recordsetVar="accounts">
+    <head>
+        <apex:includeScript value="{!URLFOR($Resource.jQueryFilesSFDC, '/jqueryFiles/js/jquery-1.8.3.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.jQueryFilesSFDC, '/jqueryFiles/js/jquery-ui-1.9.2.custom.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.jQueryFilesSFDC, '/jqueryFiles/js/jquery-ui-1.9.2.custom.min.js')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.jQueryFilesSFDC, '/jqueryFiles/css/base/jquery-ui-1.9.2.custom.css')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.jQueryFilesSFDC, '/jqueryFiles/css/base/jquery-ui-1.9.2.custom.min.css')}"/>
+    
+        <script type="text/javascript">
+            $j = jQuery.noConflict();
+            $j(document).ready(function() {
+                //$j( "#dialog" ).dialog({});
+                $j("#phone").dialog({my: "center", at: "center", of: window});// autoOpen: false, modal: true, position: 'center'
+            	
+            });
+           
+            function showDialog(name, phone){
+                alert('JQuery Loaded');
+                $j("#phoneNumber").html(phone);
+                $j("#phone").dialog("open");
+                $j('#phone').dialog("option" , "title" , name);
+                $j('#phone').dialog("option", "position", "center");
+                return false;
+           }
+        </script>
+        <style>
+    		.accountLink { color: blue; cursor: pointer; cursor: hand; }
+    	</style>
+	</head>
+    <body>
+        <!--<div id="dialog" title="Basic dialog">
+          <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
+        </div>-->
+    	<apex:dataList value="{!accounts}" var="account" id="theList">
+            <a href="" class="accountLink" onclick="return showDialog('{!account.name}','{!account.Phone}')"><apex:outputText value="{!account.name}"/></a>
+      	</apex:dataList>      
+      	<div id="phone" title="Basic Dialog">
+          <div style="float:left">Phone:</div><div id="phoneNumber"></div>
+      	</div>     
+    </body>
+</apex:page>

@@ -1,0 +1,207 @@
+<apex:page controller="agDealerCalculatorPageController" showHeader="false" standardStylesheets="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" docType="html-5.0">    
+
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">    
+
+<head>
+  <title>AgDealer Calculator</title>
+  <apex:stylesheet value="{!URLFOR($Resource.SLDS203, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+</head>  
+
+
+
+
+<body>    
+
+  <!-- REQUIRED SLDS WRAPPER -->
+  <div class="chrisgar-dev-ed">    
+
+    <!-- PAGE HEADER -->
+    <div class="slds-page-header" role="banner">
+      <!-- LAYOUT GRID -->
+      <div class="slds-grid">
+        <!-- GRID COL -->
+        <div class="slds-col">
+          <!-- HEADING AREA -->
+          <!-- MEDIA OBJECT = FIGURE + BODY -->
+          <div class="slds-media">
+            <div class="slds-media__figure">
+              <span class="slds-avatar slds-avatar--medium">
+                <img src="{!URLFOR($Resource.SLDS203, 'assets/images/avatar1.jpg')}" alt="" />
+              </span>
+            </div>
+            <div class="slds-media__body">
+              <p class="slds-text-heading--label">AGDEALER </p>
+              <h1 class="slds-text-heading--medium">Calculator</h1>
+            </div>
+          </div>
+          <!-- / MEDIA OBJECT -->
+          <!-- /HEADING AREA -->
+        </div>        
+      </div>
+      <!-- / LAYOUT GRID -->
+    </div>
+
+
+    <!-- PRIMARY CONTENT WRAPPER -->
+      <apex:form id="form1">        
+        <apex:actionFunction name="doMap" action="{!doAddition}" reRender="sumOfProductBuyNowPanel">
+            <apex:param name="x" value="" assignTo="{!mapComponentValue}" />
+        </apex:actionFunction>          
+    </apex:form> 
+    <apex:form id="form2">
+      <apex:outputpanel id="infoPanel" styleClass="slds-grid slds-wrap slds-grid--pull-padded">
+        <apex:outputpanel id="accountNamePanel" styleClass="slds-col--padded slds-size--1-of-2">
+          <strong><apex:outputLabel value="Account Name" for="accountName"/></strong>
+          <apex:inputText id="accountName" styleClass="slds-input" value="{!accountNameValue}" html-placeholder="ABC Co."/>
+        </apex:outputpanel>
+        <apex:outputpanel id="datePanel" styleClass="slds-col--padded slds-size--1-of-2">
+          <strong><apex:outputLabel value="Date" for="dateId"/></strong>
+          <apex:input type="text" id="dateId" styleClass="slds-input"  html-placeholder="01/01/2000"/>
+        </apex:outputpanel>          
+      </apex:outputpanel>
+      <br/>
+      <br/>     
+      <apex:outputpanel id="volumeDiscountPanel" styleClass="slds-grid slds-wrap slds-grid--pull-padded">
+        <apex:outputpanel id="buyNowPanel" styleClass="slds-col--padded slds-size--1-of-2">
+          <strong><apex:outputLabel value="Buy Now" for="buyNow"/></strong>
+          <apex:input type="number" id="buyNow" styleClass="slds-input" value="{!buyNowDiscountValue}" size="2" html-placeholder="Volume Discount %"/>
+        </apex:outputpanel>
+        <apex:outputpanel id="buyLaterPanel" styleClass="slds-col--padded slds-size--1-of-2">
+          <strong><apex:outputLabel value="Buy Later" for="buyLater"/></strong>
+        <apex:input type="number" id="buyLater" styleClass="slds-input" value="{!buyLaterDiscountValue}" size="2" html-placeholder="Volume Discount %"/>
+        </apex:outputpanel>          
+      </apex:outputpanel>
+      <br/>
+      <apex:outputpanel id="earlyDiscountPanel" styleClass="slds-grid slds-wrap slds-grid--pull-padded">
+        <apex:outputpanel id="ealryBuyNowPanel" styleClass="slds-col--padded slds-size--1-of-2">
+          <strong><apex:outputLabel value="Buy Now" for="earlyBuyNow"/></strong>
+          <apex:input type="number" id="earlyBuyNow" styleClass="slds-input" value="{!earlyBuyNowDiscountValue}" size="2" html-placeholder="Early Cash Discount %"/>
+        </apex:outputpanel>
+        <apex:outputpanel id="earlyBuyLaterPanel" styleClass="slds-col--padded slds-size--1-of-2">
+          <strong><apex:outputLabel value="Buy Later" for="earlyBuyLater"/></strong>
+          <apex:input type="number" id="earlyBuyLater" styleClass="slds-input" value="{!earlyBuyLaterDiscountValue}" size="2" html-placeholder="Early Cash Discount %"/>
+        </apex:outputpanel>          
+      </apex:outputpanel>
+    </apex:form>
+    <br/>
+    <br/>
+
+    <apex:outputpanel styleClass="slds-grid slds-wrap slds-grid--pull-padded">
+      <apex:outputpanel styleClass="slds-col--padded slds-size--1-of-7"><strong>Dekalb Brand</strong></apex:outputpanel>
+      <apex:outputpanel styleClass="slds-col--padded slds-size--1-of-7"><strong>Clothianidin Rate*</strong></apex:outputpanel>
+      <apex:outputpanel styleClass="slds-col--padded slds-size--1-of-7"><strong>Units</strong></apex:outputpanel>
+      <apex:outputpanel styleClass="slds-col--padded slds-size--1-of-7"><strong>Traits</strong></apex:outputpanel>
+      <apex:outputpanel styleClass="slds-col--padded slds-size--1-of-7"><strong>SRP</strong></apex:outputpanel>
+      <apex:outputpanel styleClass="slds-col--padded slds-size--1-of-7"><strong>$/Unit Buy Now</strong></apex:outputpanel>
+      <apex:outputpanel styleClass="slds-col--padded slds-size--1-of-7"><strong>$/Product Buy Now</strong></apex:outputpanel>
+    </apex:outputpanel>
+      
+    
+      
+    <c:agDealerComponent buyNowVolumeDiscount="" buyLaterVolumeDiscount="" buyNowEarlyCashDiscount="" buyLaterEarlyCashDiscount="" passthroughId="component1"/>
+    <c:agDealerComponent buyNowVolumeDiscount="" buyLaterVolumeDiscount="" buyNowEarlyCashDiscount="" buyLaterEarlyCashDiscount="" passthroughId="component2"/>
+    <c:agDealerComponent buyNowVolumeDiscount="" buyLaterVolumeDiscount="" buyNowEarlyCashDiscount="" buyLaterEarlyCashDiscount="" passthroughId="component3"/>
+    <c:agDealerComponent buyNowVolumeDiscount="" buyLaterVolumeDiscount="" buyNowEarlyCashDiscount="" buyLaterEarlyCashDiscount="" passthroughId="component4"/>
+    <c:agDealerComponent buyNowVolumeDiscount="" buyLaterVolumeDiscount="" buyNowEarlyCashDiscount="" buyLaterEarlyCashDiscount="" passthroughId="component5"/>
+    <apex:outputPanel id="extraPanel6">
+      <c:agDealerComponent buyNowVolumeDiscount="" buyLaterVolumeDiscount="" buyNowEarlyCashDiscount="" buyLaterEarlyCashDiscount="" passthroughId="component6"/>
+    </apex:outputPanel>
+    <apex:outputPanel id="extraPanel7">
+      <c:agDealerComponent buyNowVolumeDiscount="" buyLaterVolumeDiscount="" buyNowEarlyCashDiscount="" buyLaterEarlyCashDiscount="" passthroughId="component7"/>
+    </apex:outputPanel>
+    <apex:outputPanel id="extraPanel8">
+      <c:agDealerComponent buyNowVolumeDiscount="" buyLaterVolumeDiscount="" buyNowEarlyCashDiscount="" buyLaterEarlyCashDiscount="" passthroughId="component8"/>
+    </apex:outputPanel>
+    <apex:outputPanel id="extraPanel9">
+      <c:agDealerComponent buyNowVolumeDiscount="" buyLaterVolumeDiscount="" buyNowEarlyCashDiscount="" buyLaterEarlyCashDiscount="" passthroughId="component9"/>
+    </apex:outputPanel>
+    <apex:outputPanel id="extraPanel10">
+      <c:agDealerComponent buyNowVolumeDiscount="" buyLaterVolumeDiscount="" buyNowEarlyCashDiscount="" buyLaterEarlyCashDiscount="" passthroughId="component10"/>
+    </apex:outputPanel>
+    <apex:outputPanel id="extraPanel11">
+      <c:agDealerComponent buyNowVolumeDiscount="" buyLaterVolumeDiscount="" buyNowEarlyCashDiscount="" buyLaterEarlyCashDiscount="" passthroughId="component11"/>
+    </apex:outputPanel>
+    <apex:outputPanel id="extraPanel12">
+      <c:agDealerComponent buyNowVolumeDiscount="" buyLaterVolumeDiscount="" buyNowEarlyCashDiscount="" buyLaterEarlyCashDiscount="" passthroughId="component12"/>
+    </apex:outputPanel>
+    <apex:outputPanel id="extraPanel13">
+      <c:agDealerComponent buyNowVolumeDiscount="" buyLaterVolumeDiscount="" buyNowEarlyCashDiscount="" buyLaterEarlyCashDiscount="" passthroughId="component13"/>
+    </apex:outputPanel>
+    <apex:outputPanel id="extraPanel14" >
+      <c:agDealerComponent buyNowVolumeDiscount="" buyLaterVolumeDiscount="" buyNowEarlyCashDiscount="" buyLaterEarlyCashDiscount="" passthroughId="component14"/>
+    </apex:outputPanel>
+    <apex:outputPanel id="extraPanel15">
+      <c:agDealerComponent buyNowVolumeDiscount="" buyLaterVolumeDiscount="" buyNowEarlyCashDiscount="" buyLaterEarlyCashDiscount="" passthroughId="component15"/>
+    </apex:outputPanel>
+    <apex:outputPanel id="addRowButtonPanel">
+      <button onclick="addRow();" class="slds-button slds-button--neutral" id="addRowButton">
+        Add Row [+]
+      </button>
+    </apex:outputPanel> 
+    <apex:outputpanel styleClass="slds-grid">
+        <apex:outputPanel styleClass="slds-col--bump-left" id="sumOfProductBuyNowPanel">
+            <h1 class="slds-text-heading--medium" style="box-sizing: border-box; margin: 0px; padding: 0px; font-size: 1.25rem; font-family: &quot;Salesforce Sans&quot;, Arial, sans-serif; display: inherit; line-height: 1.25; color: #16325c; background-color: #f7f9fb;">Product Buy Now Sub-Total :  ${!sumOfProductBuyNow}&nbsp;</h1>
+                 
+        </apex:outputPanel>
+    </apex:outputpanel>
+  </div>
+</body>
+</html>
+
+<script type="text/javascript">   
+ var rowIncrement = 5;
+ window.onload = function hideContent(){
+  
+  document.getElementById("{!$Component.extraPanel6}").style.display="none";
+  document.getElementById("{!$Component.extraPanel7}").style.display="none";
+  document.getElementById("{!$Component.extraPanel8}").style.display="none";
+  document.getElementById("{!$Component.extraPanel9}").style.display="none";
+  document.getElementById("{!$Component.extraPanel10}").style.display="none";
+  document.getElementById("{!$Component.extraPanel11}").style.display="none";
+  document.getElementById("{!$Component.extraPanel12}").style.display="none";
+  document.getElementById("{!$Component.extraPanel13}").style.display="none";
+  document.getElementById("{!$Component.extraPanel14}").style.display="none";
+  document.getElementById("{!$Component.extraPanel15}").style.display="none";
+}
+function addRow(){
+
+  rowIncrement = rowIncrement +1;
+  switch (rowIncrement) {
+    case 6:
+      document.getElementById("{!$Component.extraPanel6}").style.display="block";
+      break;
+    case 7:
+      document.getElementById("{!$Component.extraPanel7}").style.display="block";
+      break;
+    case 8:
+      document.getElementById("{!$Component.extraPanel8}").style.display="block";
+      break;
+    case 9:
+      document.getElementById("{!$Component.extraPanel9}").style.display="block";
+      break;
+    case 10:
+      document.getElementById("{!$Component.extraPanel10}").style.display="block";
+      break;      
+    case 11:
+      document.getElementById("{!$Component.extraPanel11}").style.display="block";
+      break;
+    case 12:
+      document.getElementById("{!$Component.extraPanel12}").style.display="block";
+      break;
+    case 13:
+      document.getElementById("{!$Component.extraPanel13}").style.display="block";
+      break;
+    case 14:
+      document.getElementById("{!$Component.extraPanel14}").style.display="block";
+      break;
+    case 15:
+      document.getElementById("{!$Component.extraPanel15}").style.display="block";
+      document.getElementById("{!$Component.addRowButtonPanel}").style.display="none";
+      break;                   
+  }
+}
+    function getComponentInformation(value, cmpId){
+        doMap(cmpId+":"+value);
+    }
+</script>
+</apex:page>

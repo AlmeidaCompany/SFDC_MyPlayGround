@@ -1,0 +1,15 @@
+<apex:page standardController="Opportunity" >
+    <apex:outputPanel rendered="{!IF(Opportunity.StageName == 'Prospecting', true, false)}">
+        Tip for Prospecting
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!IF(Opportunity.StageName == 'Needs Analysis', true, false)}">
+        Tip for Needs Analysis
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!IF(Opportunity.StageName == 'Proposal/Price Quote', true, false)}">
+        Tip for Proposal/Price Quote
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!IF(Opportunity.StageName == 'Negotiation/Review stages', true, false)}">
+        Tip for Negotiation/Review stages
+    </apex:outputPanel>
+    
+</apex:page>

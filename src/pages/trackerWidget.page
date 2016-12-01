@@ -1,0 +1,146 @@
+<apex:page sidebar="false" standardController="Account">
+    <apex:includeScript value="{!URLFOR($Resource.jQueryFilesSFDC, '/jqueryFiles/js/jquery-1.8.3.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.jQueryFilesSFDC, '/jqueryFiles/js/jquery-ui-1.9.2.custom.js')}"/>
+    <!--<apex:includeScript value="{!URLFOR($Resource.jQueryFilesSFDC, '/jqueryFiles/js/jquery-ui-1.9.2.custom.min.js')}"/>-->
+    <apex:stylesheet value="{!URLFOR($Resource.jQueryFilesSFDC, '/jqueryFiles/css/base/jquery-ui-1.9.2.custom.css')}"/>
+    <!--<apex:stylesheet value="{!URLFOR($Resource.jQueryFilesSFDC, '/jqueryFiles/css/base/jquery-ui-1.9.2.custom.min.css')}"/>-->
+    <script type="text/javascript">
+    	var j$ = jQuery.noConflict();
+    	j$(document).ready(function(){
+            console.log('JQuery is loaded!! :');            
+            j$( "#changeClassBtn" ).click(function(){
+                SwithTrackerClass();
+            });
+            j$( "#trackerOff" ).click(function(){
+                SwithTrackerClassOff();                
+            });            
+            switch ('{!Account.Delivery_Status__c}') {
+                case "In Progress":
+                	j$("#tracker3").hide();
+                    j$( "#tracker1" ).switchClass( "progtrckr-todo", "progtrckr-done", 2000);
+                    break;
+                case "Shipped":
+                	j$("#tracker3").hide();
+                    j$( "#tracker1" ).switchClass( "progtrckr-todo", "progtrckr-done", 2000);
+                    j$( "#tracker2" ).switchClass( "progtrckr-todo", "progtrckr-done", 3000);
+                    break;
+                case "In Transit":
+                	j$("#tracker3").hide();
+                    j$( "#tracker1" ).switchClass( "progtrckr-todo", "progtrckr-done", 2000);
+                    j$( "#tracker2" ).switchClass( "progtrckr-todo", "progtrckr-done", 3000);
+                    j$( "#tracker4" ).switchClass( "progtrckr-todo", "progtrckr-done", 4000);
+                    break;
+                case "Delivered":
+                    j$("#tracker3").hide();
+                    j$( "#tracker1" ).switchClass( "progtrckr-todo", "progtrckr-done", 2000);
+                    j$( "#tracker2" ).switchClass( "progtrckr-todo", "progtrckr-done", 3000);
+                    j$( "#tracker4" ).switchClass( "progtrckr-todo", "progtrckr-done", 4000);
+                    j$( "#tracker5" ).switchClass( "progtrckr-todo", "progtrckr-done", 5000);
+                    break;
+                case "Delayed":
+                    j$( "#tracker1" ).switchClass( "progtrckr-todo", "progtrckr-done", 2000);
+                    j$( "#tracker2" ).switchClass( "progtrckr-todo", "progtrckr-done", 3000);
+                    j$( "#tracker3" ).switchClass( "progtrckr-todo", "progtrckr-delayed", 4000);
+                    break;
+            }            
+            console.log('JQuery is loaded final!! :');
+        });    	
+    	function SwithTrackerClass(){
+            console.log('SwithTrackerClass entry :  ');
+            j$( "#tracker1" ).switchClass( "progtrckr-todo", "progtrckr-done", 1000, SwithTracker2Class());//#ff4d4d            
+        }
+    	function SwithTracker2Class(){
+            j$( "#tracker2" ).switchClass( "progtrckr-todo", "progtrckr-done", 2000,  SwithTracker3Class());            
+        }
+    	function SwithTracker3Class(){
+            j$( "#tracker3" ).switchClass( "progtrckr-todo", "progtrckr-delayed", 3000,  SwithTracker4Class());
+        }   
+    	function SwithTracker4Class(){
+            j$( "#tracker4" ).switchClass( "progtrckr-todo", "progtrckr-done", 4000,  SwithTracker5Class() );
+        }
+    	function SwithTracker5Class(){
+            j$( "#tracker5" ).switchClass( "progtrckr-todo", "progtrckr-done", 5000 );
+        }    	
+    	function SwithTrackerClassOff(){            
+        	j$("#tracker1, #tracker2, #tracker3, #tracker4, #tracker5").switchClass("progtrckr-done", "progtrckr-todo", 1000 );
+    	}
+    	
+    </script>
+    <style type="text/css">       
+        ol.progtrckr {
+        	display: table;
+        	list-style-type: none;
+            margin: 0;
+            padding: 0;
+            table-layout: fixed;
+            width: 100%;
+        }
+        ol.progtrckr li {
+        	display: table-cell;
+            text-align: center;
+            line-height: 3em;
+        }       
+        ol.progtrckr li.progtrckr-delayed {
+            color: black;
+            border-bottom: 4px solid yellow;
+        }
+        ol.progtrckr li.progtrckr-delayed:before {
+            content: "\2713";
+            color: white;
+            background-color: yellow;
+            height: 1.2em;
+            width: 1.2em;
+            line-height: 1.2em;
+            border: none;
+            border-radius: 1.2em;
+        }    
+        ol.progtrckr li.progtrckr-done {
+            color: black;
+        	border-bottom: 4px solid green;<!--yellowgreen-->
+        }
+        ol.progtrckr li.progtrckr-todo {
+            color: silver; 
+            border-bottom: 4px solid silver;
+        }    
+        ol.progtrckr li:after {
+            content: "\00a0\00a0";
+        }
+        ol.progtrckr li:before {
+            position: relative;
+            bottom: -2.5em;
+        	<!--top: 0.8em;-->
+            float: left;
+            left: 50%;
+            line-height: 1em;
+        }
+        ol.progtrckr li.progtrckr-done:before {
+            content: "\2713";
+            color: white;
+        	background-color: green;<!--yellowgreen-->
+            height: 1.2em;
+            width: 1.2em;
+            line-height: 1.2em;
+            border: none;
+            border-radius: 1.2em;
+        }
+        ol.progtrckr li.progtrckr-todo:before {
+            content: "\039F";
+            color: silver;
+            background-color: white;
+        	font-size: 1.5em;
+            bottom: -1.6em;
+        }
+	</style>
+    <div id="form1" > 
+        <ol class="progtrckr" >
+            <li id="tracker1" class="progtrckr-todo">Processing</li>
+            <li id="tracker2" class="progtrckr-todo">Shipped</li>
+            <li id="tracker3" class="progtrckr-todo">Delayed</li>
+            <li id="tracker4" class="progtrckr-todo">In Transit</li>
+            <li id="tracker5" class="progtrckr-todo">Delivered</li>
+        </ol>       
+        <br/>
+        <input id="changeClassBtn" type="button" value="Run Effect"/>
+        <input id="trackerOff" type="button" value="Off"/>	       
+    </div>
+</apex:page>

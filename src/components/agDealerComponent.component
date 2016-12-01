@@ -1,0 +1,84 @@
+<apex:component controller="agDealerCalculatorComponentController" >
+	<!-- Function to add value to page component -->
+	<script language="JavaScript" type="text/javascript">
+    	
+    	function validateUnit(prd, pId, units){            
+            if(units < 0){               
+                getComponentInformation(0, pId);
+            }else{
+            	getComponentInformation(prd, pId);
+            }            
+        }
+   	    
+    </script>
+	
+    <!--ATTRIBUTE DEFINITION -->
+    <apex:attribute name="buyNowVolumeDiscount" description="Buy Now Volume Discount" type="Integer" required="true" />
+    <apex:attribute name="buyLaterVolumeDiscount" description="Buy Later Volume Discount" type="Integer" required="true" />
+    <apex:attribute name="buyNowEarlyCashDiscount" description="Buy Now Early Cash Discount" type="Integer" required="true" />
+    <apex:attribute name="buyLaterEarlyCashDiscount" description="Buy Now Early Cash Discount" type="Integer" required="true" />
+    <apex:attribute name="passthroughId" description="Id of the component" type="String" required="true" />
+   	 <apex:attribute name="panelId" description="Id of the panel" type="String" required="false" /> 
+    <!--COMPONENT DEFINITION -->
+   
+	<apex:form id="componentForm1">
+        <apex:outputPanel styleClass="chrisgar-dev-ed">  
+            <apex:outputpanel id="errorPanel" styleClass="slds-grid slds-wrap slds-grid--pull-padded">
+              <apex:outputpanel id="dbError" styleClass="slds-col--padded slds-size--1-of-7"></apex:outputpanel>
+              <apex:outputpanel id="crError" styleClass="slds-col--padded slds-size--1-of-7"></apex:outputpanel>
+              <apex:outputpanel id="unError" styleClass="slds-col--padded slds-size--1-of-7 slds-box--x-small  {!IF(unitHasError, 'slds-show', 'slds-hide')}">
+              <div class="slds-popover slds-nubbin--bottom-left slds-theme--error" role="alert" aria-live="polite">
+                        <div class="slds-popover__body slds-text-longform">
+                            <p>No Negative Numbers</p>
+                        </div>
+                    </div>
+                </apex:outputpanel>
+              <apex:outputpanel id="trtError" styleClass="slds-col--padded slds-size--1-of-7"></apex:outputpanel>
+              <apex:outputpanel id="srpError" styleClass="slds-col--padded slds-size--1-of-7"></apex:outputpanel>
+              <apex:outputpanel id="unBNError" styleClass="slds-col--padded slds-size--1-of-7"></apex:outputpanel>
+              <apex:outputpanel id="prdBNError" styleClass="slds-col--padded slds-size--1-of-7"></apex:outputpanel>
+            </apex:outputpanel>
+            <apex:outputpanel styleClass="slds-grid slds-wrap slds-grid--pull-padded">
+                
+                <apex:outputpanel styleClass="slds-col--padded slds-size--1-of-7">
+                    <apex:selectList value="{!dekalbBrandValue}" size="1" id="brandValues" styleClass="slds-select" >
+                        <apex:actionSupport event="onchange" reRender="sprPanel, traitPanel, unitPanel" />
+                        <apex:selectOptions value="{!dekalbBrands}"/>
+                    </apex:selectList>
+                </apex:outputpanel>
+                
+            <apex:outputpanel styleClass="slds-col--padded slds-size--1-of-7">
+                <apex:selectList value="{!clothiRateValue}" size="1" id="rateValues" styleClass="slds-select" >
+                    <!-- <apex:actionSupport event="onchange" reRender="value1" /> -->
+                    <apex:selectOptions value="{!clothiRates}"/>
+                </apex:selectList>
+            </apex:outputpanel>
+              
+            <apex:outputpanel id="unitPanel" styleClass="slds-col--padded slds-size--1-of-7">
+                <apex:input type="number" value="{!units}" id="unitValue" styleClass="slds-input" disabled="{!dekalbBrandValue == '--None--' || dekalbBrandValue == ''}">
+                    <apex:actionSupport event="onchange" oncomplete="validateUnit('{!productBuyNow}','{!passthroughId}', '{!units}');" reRender="unitBuyNowPanel, productBuyNowPanel, unError" />               
+                </apex:input>         
+            </apex:outputpanel>   
+              
+            <apex:outputpanel id="traitPanel" styleClass="slds-col--padded slds-size--1-of-7">
+                <apex:outputText value="{!trait}" id="traitValue" styleClass="slds-input" /> 
+            </apex:outputpanel>
+                
+            <apex:outputpanel id="sprPanel" styleClass="slds-col--padded slds-size--1-of-7" >
+                <apex:outputText value="{!spr}" id="srpValue" styleClass="slds-input" />
+            </apex:outputpanel>
+                
+            <apex:outputpanel id="unitBuyNowPanel" styleClass="slds-col--padded slds-size--1-of-7">
+                <apex:outputText value="{!unitBuyNow}" id="unitBuyNowValue" styleClass="slds-input" />
+            </apex:outputpanel>
+                
+            <apex:outputpanel id="productBuyNowPanel" styleClass="slds-col--padded slds-size--1-of-7">
+                <apex:outputText value="{!productBuyNow}" id="productBuyNowValue" styleClass="slds-input" />
+            </apex:outputpanel>
+          </apex:outputpanel>
+      </apex:outputpanel>
+
+      
+        
+    </apex:form>
+</apex:component>
